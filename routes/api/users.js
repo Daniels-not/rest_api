@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const bcrypt = require('bcrypt');
 const user = require("../../models/user_models");
 
 const Joi = require('joi');
@@ -48,27 +49,36 @@ route.get('/', (req, res) => {
 route.post('/', (req, res) => {
     const body = req.body;
 
-    const { error, value } = schema.validate(body);
-
-    if (error) {
-        res.json(error.message);
-    }else{
-        const newUser = createNewUser(body);
-
-        newUser.then(user => {
-            res.json({
-                message: "User created successfully",
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                image: user.image,
-                description: user.description,
-                status: user.status,
+    user.findOne({email: body.email}).then((user) => {
+        if(user){
+            return res.status(400).json({
+                message: 'User already exists'
             });
-        }).catch(err => {
-            res.json(err.message);
-        })
-    }
+        } else {
+            const { error, value } = schema.validate(body);
+
+            if (error) {
+                res.json(error.message);
+            }else{
+                const newUser = createNewUser(body);
+
+                newUser.then(user => {
+                    res.json({
+                        message: "User created successfully",
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        email: user.email,
+                        image: user.image,
+                        description: user.description,
+                        status: user.status,
+                    });
+                }).catch(err => {
+                    res.json(err.message);
+                })
+            }
+        }
+    })
+
 
 });
 
@@ -131,7 +141,7 @@ async function createNewUser(body) {
         first_name: body.first_name,
         last_name: body.last_name,
         email: body.email,
-        password: body.password,
+        password: bcrypt.hashSync(body.password, 10),
         status: body.status,
         image: body.image,
         description: body.description,

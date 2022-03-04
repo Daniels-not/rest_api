@@ -48,7 +48,7 @@ route.post('/', (req, res) => {
         res.json(error.message);
     }else {
         const newCourse = createNewCourse(body);
-    
+
         newCourse.then(course => {
             res.json({
                 success: true,
