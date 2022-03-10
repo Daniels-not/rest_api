@@ -1,0 +1,14 @@
+{
+    "name": "REST API V1 (PROD)- User AND COURSES",
+    "version": "1.0.0",
+    "description": "REST API V1 - User AND COURSES MADE WITH NODEJS EXPRESS AND POWERED BY MONGODB",
+
+    "configDB": {
+
+    },
+
+    "confToken": {
+        "secret": "secret",
+        "expiresIn": "24h"
+    }
+}

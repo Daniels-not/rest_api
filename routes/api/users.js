@@ -1,6 +1,6 @@
 const express = require("express");
 const route = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const user = require("../../models/user_models");
 
 const Joi = require('joi');
@@ -11,13 +11,11 @@ const Joi = require('joi');
 const schema = Joi.object({
 
     first_name: Joi.string()
-        .alphanum()
         .min(3)
         .max(40)
         .required(),
 
     last_name: Joi.string()
-        .alphanum()
         .min(3)
         .max(40)
         .required(),
