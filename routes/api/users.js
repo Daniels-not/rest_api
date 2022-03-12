@@ -1,9 +1,11 @@
 const express = require("express");
 const route = express.Router();
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const bcrypt = require('bcryptjs');
 const user = require("../../models/user_models");
-
 const Joi = require('joi');
+const verifyToken = require("../../middleware/auth");
 
 // Joi validation schema for user
 
@@ -30,7 +32,7 @@ const schema = Joi.object({
 
 // @route   GET api/users
 
-route.get('/', (req, res) => {
+route.get('/', verifyToken, (req, res) => {
     let results = getAllUsers();
 
     results.then(users => {

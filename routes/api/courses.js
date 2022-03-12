@@ -15,7 +15,7 @@ const schema = Joi.object({
         .min(3)
         .max(40)
         .required(),
-    
+
     description: Joi.string()
         .alphanum()
         .min(5)
@@ -27,7 +27,7 @@ const schema = Joi.object({
 
 route.get('/', (req, res) => {
     let results = getAllCourses();
-
+    
     results.then(courses => {
         res.json(courses);
     }).catch(err => {
